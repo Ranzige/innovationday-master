@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+</head>
+
+<body>
+    <script>
+        function getQueryStringByName(name){
+             var result = location.search.match(new RegExp("[\?\&]" + name+ "=([^\&]+)","i"));
+             if(result == null || result.length < 1){
+                 return "";
+             }
+             return result[1];
+        }
+
+        var personStr = getQueryStringByName('person');
+        personStr = decodeURIComponent(personStr);
+        var personObj = JSON.parse(personStr);
+        alert(personStr);
+    </script>
+</body>
+</html>

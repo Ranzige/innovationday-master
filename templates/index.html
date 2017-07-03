@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>物流数据</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
+<style type="text/css" media="all">
+    .truckMessage
+    {
+        position:absolute;
+        width: 400px;
+        heigth: 500px;
+        top: 100px;
+        left: 300px;
+    }
+    input[type="button"]{
+        border: 1px solid; border-color: #EEE #CCC #CCC #EEE;
+        color: #000; font-weight: bold; background: #F5F5F5;
+        width:100px;
+        heigth:20px;
+    input[type="submit"]{
+        border: 1px solid; border-color: #EEE #CCC #CCC #EEE;
+        color: #000; font-weight: bold; background: #F5F5F5;
+        width:100px;
+        heigth:20px;
+ }
+</style>
+
+
+
+
+<script type="text/javascript">
+  $(function(){
+    $("#truck").click(function(){
+        var strHtml = "";
+        $.getJSON("static/truck.json",function(data){
+            $(".load").empty();
+            $.each(data, function(InfoIndex, Info){
+                strHtml += "批号：" + Info['batch'] + "<br />";
+                strHtml += "包装箱编号：" + Info['container'] + "<br />";
+                strHtml += "承运公司：" + Info['deliveryman'] + "<br />";
+                strHtml += "订单编号：" + Info['order'] + "<br />";
+                strHtml += "车牌号：" + Info['vehicle'] + "<br />";
+                strHtml += "司机姓名：" + Info['driver'] + "<br />";
+                strHtml += "目的地：" + Info['target'] + "<br />";
+                strHtml += "发车地：" + Info['start'] + "<br />";
+            });
+            $(".load").html(strHtml);
+        });
+
+    });
+
+
+
+     $("#environment").click(function(){
+        var strHtml = "";
+        $.getJSON("static/sensorData.json",function(data){
+            $(".load2").empty();
+            $.each(data, function(InfoIndex, Info){
+                strHtml += "Ambient_temp_celsius：" + Info['Ambient_temp_celsius'] + "<br />";
+                strHtml += "IR_temp_celsius：" + Info['IR_temp_celsius'] + "<br />";
+                strHtml += "pressure：" + Info['pressure'] + "<br />";
+                strHtml += "luminance：" + Info['luminance'] + "<br />";
+                strHtml += "humidity：" + Info['humidity'] + "<br />";
+            });
+            $(".load2").html(strHtml);
+        });
+     });
+
+
+
+
+     $.ajax({
+        url: "http://localhost:8080/",
+        dataType: "jsonp",
+        data: {},
+        success: function(res) {
+            console.log(res);
+        }
+    });
+
+
+
+});
+
+
+
+</script>
+
+
+
+
+</head>
+<body>
+    <center>
+    <div class="truckMessage">
+        <form action="/index" method="post" name="truckMessage">
+                <table border="1" width="600" heigth="400" >
+                    <tr heigth>
+                        <th><input type="button" name="truck" id="truck" value="查看货车信息"/></th>
+                        <th><input type="button" name="environment" id="environment" value="查看环境信息" /></th>
+                    </tr>
+                    <tr>
+                        <td height="200px">
+                            <div class="load"></div>
+                        </td>
+                        <td>
+                            <div class="load2"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><center><input type="submit" name="submit" id="submit" value="提交"/></center></td>
+                    </tr>
+
+                </table>
+        </form>
+    </div>
+    </center>
+
+</body>
+</html>
